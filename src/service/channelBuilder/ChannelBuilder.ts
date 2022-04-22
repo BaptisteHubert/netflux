@@ -223,6 +223,7 @@ export class ChannelBuilder extends Service<proto.IMessage, proto.Message> {
 
     // Try to connect over WebSocket
     if (theOther.wss && !me.wsTried && (await this.tryWs(streamId, me, theOther, amIInitiator))) {
+      console.log("FIX - Trying to connect over WebSocket")
       return
     }
 
@@ -241,11 +242,13 @@ export class ChannelBuilder extends Service<proto.IMessage, proto.Message> {
     // Try to connect over RTCDataChannel, because no luck with WebSocket
     if (me.dcSupported && theOther.dcSupported) {
       if (!me.dcTried && (await this.tryDc(streamId, me, theOther, amIInitiator))) {
+        console.log("FIX - Trying to connect over RTCDataChannel")
         return
       }
 
       // Prompt the other peer to connect over RTCDataChannel as I was not able
       if (!theOther.dcTried) {
+        console.log("FIX - I couldn't connect over DataChannel")
         log.channelBuilder(`Prompt the other to connect over RTCDataChannel`)
         this.allStreams.sendOver(
           streamId,
@@ -297,7 +300,13 @@ export class ChannelBuilder extends Service<proto.IMessage, proto.Message> {
     amIInitiator: boolean
   ): Promise<boolean> {
     try {
+      console.log("FIX - Trying DataChannel")
+      console.log("FIX - theOther.id : ", theOther.id)
+      console.log("FIX - me.id : ", me.id)
+
       const type = this.getType(streamId, amIInitiator)
+      console.log("FIX - this.getType : ", type)
+
       await this.dataChannelBuilder.connect(
         theOther.id,
         me.id,

@@ -82,11 +82,8 @@ export class Remote {
   }
 
   sdpIsSent() {
-    console.log("FIX - sdpIsSent")
     this.isSDPSent = true
     if (this.pc.iceGatheringState === 'complete') {
-      
-      console.log("FIX - Connection established")
       this.sendFinalMessage()
     }
   }

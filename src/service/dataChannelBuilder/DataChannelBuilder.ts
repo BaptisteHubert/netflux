@@ -61,29 +61,21 @@ export class DataChannelBuilder extends Service<proto.IMessage, proto.Message> {
    * Establish an `RTCDataChannel`. Starts by sending an **SDP offer**.
    */
   async connect(targetId: number, myId: number, type: number) {
-    console.log("FIX - Here, we try to connect")
     log.webrtc('connectWith call', { targetId, myId, type })
     const streamId =
       type === Channel.WITH_INTERNAL ? this.wc.STREAM_ID : this.wc.signaling.STREAM_ID
     let remote = this.remotes.get(targetId) as Remote
     if (remote) {
-      console.log("FIX - Remote exists")
       remote.clean()
     } else {
-      console.log("FIX - Creating Remote")
       remote = this.createRemote(streamId, targetId, myId)
     }
     const remoteType = Channel.remoteType(type)
-    console.log("FIX - remoteType : ",remoteType)
     const dc = (remote.pc as any).createDataChannel(`{"id":${this.wc.myId},"type":${remoteType}}`)
-    console.log("FIX - dataChannel : ",dc)
     const offerInit = await remote.pc.createOffer()
-    console.log("FIX - offerInit : ",offerInit)
     await remote.pc.setLocalDescription(offerInit)
 
     const offer = (remote.pc.localDescription as RTCSessionDescription).sdp
-    
-    console.log("FIX - offer : ",offer)
     this.allStreams.sendOver(streamId, { offer }, targetId, myId)
     remote.sdpIsSent()
 
@@ -94,7 +86,6 @@ export class DataChannelBuilder extends Service<proto.IMessage, proto.Message> {
         resolve(new Channel(this.wc, dc, type, targetId, remote.pc))
       }
     })) as Channel
-    console.log("FIX - channel : ",channel)
     this.channelsSubject.next({ id: targetId, channel })
   }
 

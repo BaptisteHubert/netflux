@@ -1,7 +1,7 @@
 {
   "name": "netflux",
   "description": "Peer to peer isomorphic transport API based on WebRTC and WebSocket. Allows to create/join full mesh network",
-  "version": "0.0.0-development",
+  "version": "0.0.0-development-HCERES-fix",
   "license": "AGPL-3.0",
   "main": "dist/netflux.node.es5.cjs.js",
   "module": "dist/netflux.node.es5.esm.js",

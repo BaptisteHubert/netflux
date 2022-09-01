@@ -10,7 +10,7 @@ interface IDistantMember {
   missedHeartbeat: number
 }
 
-const REQUEST_MEMBERS_INTERVAL = 20000
+const REQUEST_MEMBERS_INTERVAL = 5000
 const MAX_ROUTE_DISTANCE = 3
 const HEARTBEAT_INTERVAL = 3000
 const DELAYED_TIMEOUT = 300000
